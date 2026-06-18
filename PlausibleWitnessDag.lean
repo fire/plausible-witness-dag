@@ -85,7 +85,7 @@ The candidate predicate gives plausible an existence problem. The deterministic
 `readback` function, parameterized by the current `walkSteps`, recovers the
 caller-specific result and tells the driver whether a missing witness is a real
 negative or only a budget hit. -/
-def resolve [Inhabited α] (query : String) (candidateIsWitness : Nat → Bool)
+def resolve [Inhabited α] (query : String) (candidateIsWitness : Level → Nat → Bool)
     (readback : Nat → Readback α) (levels : Array Level := ladder)
     : IO (α × Nat × TraceEntry) := do
   let mut chosen : α := default
@@ -94,7 +94,7 @@ def resolve [Inhabited α] (query : String) (candidateIsWitness : Nat → Bool)
   let mut resolved := false
   for lvl in levels do
     if ¬ resolved then
-      let _failure ← certify lvl candidateIsWitness
+      let _failure ← certify lvl (candidateIsWitness lvl)
       let rb := readback lvl.walkSteps
       lvlIdx := lvl.idx
       chosen := rb.value
