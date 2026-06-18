@@ -8,4 +8,7 @@ require plausible from git
   "https://github.com/leanprover-community/plausible" @ "v4.30.0"
 
 @[default_target] lean_lib PlausibleWitnessDag where
-  roots := #[`PlausibleWitnessDag]
+  globs := #[.one `PlausibleWitnessDag, .submodules `PlausibleWitnessDag]
+
+lean_exe «plausible-witness-dag-sample» where
+  root := `PlausibleWitnessDag.Examples
